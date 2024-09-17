@@ -1,30 +1,22 @@
 import sqlite3
-
-
-
-
 class Band:
     def __init__(self, id, name, hometown ) -> None:
        self.id = id
        self.name = name
        self.hometown = hometown
        pass
-    # bands = [("Ammbasodors of christ", "Tanzania"), 
-    #      ("Zabron singers", "Tanzania"),
-    #      ("Alarm Ministries Rwanda", "Rwanda"),
-    #      ("Healing Worship Team", "Kenya")
-    #      ]
-
+    
     @ classmethod
     def create_table(cls):
        connection = sqlite3.connect("mydb.db")
        cursor = connection.cursor()
-       cursor.execute('''CREATE TABLE IF NOT EXIST bands
-                      (id INTEGER PRIMARY KEY AUTOINCREAMENT,
+       cursor.execute('''CREATE TABLE IF NOT EXISTS bands
+                      (id INTEGER PRIMARY KEY AUTOINCREMENT,
                       name TEXT, 
                       hometown TEXT)''')
        connection.commit()
        connection.close
+       
     @ classmethod
     def create(cls, name, hometown):
        connection = sqlite3.connect("mydb.db")
@@ -60,8 +52,8 @@ class Band:
        cursor = connection.cursor()
        cursor.execute('''SELECT concert.date, venue.city, bands.name, bands.hometown
                       FROM concerts
-                      JOIN venues on concerts.venue id = venues id
-                      JOIN bands on concert.band id = bands id'''
+                      JOIN venues on concerts.venue id = venues.id
+                      JOIN bands on concert.band id = bands.id'''
                       )
        intro = cursor.fetchall()
        connection.close
@@ -102,3 +94,26 @@ class Band:
 
 
     pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# bands = [("Ammbasodors of christ", "Tanzania"), 
+    #      ("Zabron singers", "Tanzania"),
+    #      ("Alarm Ministries Rwanda", "Rwanda"),
+    #      ("Healing Worship Team", "Kenya")
+    #      ]
