@@ -11,13 +11,12 @@ class Venue:
         connection = sqlite3.connect("mydb.db")
         cursor = connection.cursor()
         cursor.execute('''
-        CREATE TABLE IF NOT EXISTS venues(i
-                       id INTEGER PRIMARY KEY AUTOINCREAMENT,
+        CREATE TABLE IF NOT EXISTS venues(
+                       id INTEGER PRIMARY KEY AUTOINCREMENT,
                        title TEXT,
                        city TEXT
                        )
-                       '''
-        )
+                       ''')
         connection.commit()
         connection.close()
 
