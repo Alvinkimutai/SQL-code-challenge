@@ -4,11 +4,17 @@ from venue import Venue
 from concert import Concert
 
 """Create tables and populate the database before running tests."""
+Band.drop_table()
 Band.create_table()
+Venue.drop_table()
 Venue.create_table()
 Concert.create_table()
 
+
+
+
     # Create some sample data
+
 band1 =Band.create("Ammbasodors of Christ", "Tanzania")
 band2 = Band.create("Zabron Singers", "Tanzania")
 venue1 = Venue.insertdata("Venue One", "City A")
