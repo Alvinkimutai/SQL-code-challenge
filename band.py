@@ -16,7 +16,18 @@ class Band:
                       hometown TEXT)''')
        connection.commit()
        connection.close
-       
+
+    @classmethod
+    def drop_table(cls):
+       connection = sqlite3.connect("mydb.db")
+       cursor = connection.cursor()
+       cursor.execute('''
+         DROP TABLE IF EXISTS bands;
+                      ''')
+       connection.commit()
+       connection.close()
+
+
     @ classmethod
     def create(cls, name, hometown):
        connection = sqlite3.connect("mydb.db")
@@ -40,12 +51,16 @@ class Band:
                       WHERE concerts.band_id = ?''', (self.id,)).fetchall()
        connection.commit()
        connection.close
+
+
     def play_in_venue(self, venue, date):
        connection = sqlite3.connect("mydb.db")
        cursor = connection.cursor()
        cursor.execute('INSERT INTO concerts(band_id, venue_id, date) VALUES(?,?,?)', (self.id, venue.id, date))
        connection.commit()
        connection.close
+
+
     @classmethod
     def all_introductions(cls):
        connection = sqlite3.connect("mydb.db")
