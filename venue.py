@@ -20,6 +20,15 @@ class Venue:
         connection.commit()
         connection.close()
 
+    @classmethod
+    def drop_table(cls):
+        connection = sqlite3.connect("mydb.db")
+        cursor = connection.cursor()
+        cursor.execute('''
+        DROP TABLE IF EXISTS venues''')
+        connection.commit()
+        connection.close()
+
     @ classmethod
     def insertdata(cls, title, city):
         connection = sqlite3.connect("mydb.db")

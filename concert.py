@@ -25,6 +25,11 @@ class Concert:
         connection.commit()
         connection.close()
     @classmethod
+    def drop_table(cls):
+        connection = sqlite3.connect("mydb.db")
+        cursor = connection.cursor()
+        cursor.execute()
+    @classmethod
     def insert_into_concerts(cls, band_id, venue_id, date):
         connection = sqlite3.connect("mydb.db")
         cursor = connection.cursor()
