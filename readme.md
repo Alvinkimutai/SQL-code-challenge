@@ -3,7 +3,7 @@
 - To perform necessary operations on the database **raw SQL queries** was used in this case.
 ***
 
-## Running the code ##
+## Setting up and Running the code ##
 
 - Fork and clone the repository into your local machine
 - Open the Repository in Visual Studio Code
