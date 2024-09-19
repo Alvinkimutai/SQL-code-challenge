@@ -36,21 +36,27 @@ class Band:
        connection.commit()
        connection.close
     
+  
     def concerts(self):
-       connection = sqlite3.connect("mydb.db")
-       cursor = connection.cursor()
-       cursor.execute('SELECT * FROM concerts WHERE band id = ?', (self.id,))
-       connection.commit()
-       connection.close
-    
+         connection = sqlite3.connect("mydb.db")
+         cursor = connection.cursor()
+         cursor.execute('SELECT * FROM concerts WHERE band_id = ?', (self.id,))
+         concerts = cursor.fetchall()
+         connection.close()
+         return concerts
+  
+
     def venues(self):
-       connection = sqlite3.connect("mydb.db")
-       cursor = connection.cursor()
-       cursor.execute('''SELECT DISTINCT venues.*FROM venues
-                      JOIN concerts on concerts.venue_id = venues.id
-                      WHERE concerts.band_id = ?''', (self.id,)).fetchall()
-       connection.commit()
-       connection.close
+      connection = sqlite3.connect("mydb.db")
+      cursor = connection.cursor()
+      cursor.execute('''
+        SELECT DISTINCT venues.* FROM venues
+        JOIN concerts ON concerts.venue_id = venues.id
+        WHERE concerts.band_id = ?
+    ''', (self.id,))
+      venues = cursor.fetchall()
+      connection.close()
+      return venues  # Make sure to return the venues list
 
 
     def play_in_venue(self, venue, date):
@@ -60,55 +66,36 @@ class Band:
        connection.commit()
        connection.close
 
-
     @classmethod
     def all_introductions(cls):
-       connection = sqlite3.connect("mydb.db")
-       cursor = connection.cursor()
-       cursor.execute('''SELECT concert.date, venue.city, bands.name, bands.hometown
-                      FROM concerts
-                      JOIN venues on concerts.venue id = venues.id
-                      JOIN bands on concert.band id = bands.id'''
-                      )
-       intro = cursor.fetchall()
-       connection.close
-       return [f"Hello {city}!!!!! We are {name} and we're from {hometown}" for city, name, hometown in intro]
+     with sqlite3.connect("mydb.db") as connection:
+        cursor = connection.cursor()
+        cursor.execute('''
+            SELECT concerts.date, venues.city, bands.name, bands.hometown
+            FROM concerts
+            JOIN venues ON concerts.venue_id = venues.id
+            JOIN bands ON concerts.band_id = bands.id
+        ''')
+        intro = cursor.fetchall()
+        return [f"Hello {city}!!!!! We are {name} and we're from {hometown}" for date, city, name, hometown in intro]
+
+    
+ 
     
     @classmethod
     def most_performances(cls):
-       connection = sqlite3.connect("mydb.db")
-       cursor = connection.cursor()
-       cursor.execute('''SELECT band id, COUNT(*) as performance_count
-                      FROM concerts
-                      GROUP BY band_id
-                      ORDER BY performance_count DESC
-                      LIMIT 1''')
-       result = cursor.fetchone()
-       connection.close()
-       return result[0] if result else None
-       
-       
-    
-    
-    
-    # cursor.executemany("insert into band values(?,?)", bands)
-
-    # for row in cursor.execute("select * from band"):
-      
-    #   print(row)
-    
-    # print("*************************")
-
-    # cursor.execute("select * from band where hometown=:h",{"h":"Tanzania"})
-
-    # band_search = cursor.fetchall()
-
-    # print(band_search)
-
-    
-
-
-    pass
+      connection = sqlite3.connect("mydb.db")
+      cursor = connection.cursor()
+      cursor.execute('''
+        SELECT band_id, COUNT(*) as performance_count
+        FROM concerts
+        GROUP BY band_id
+        ORDER BY performance_count DESC
+        LIMIT 1
+    ''')
+      result = cursor.fetchone()
+      connection.close()
+      return result[0] if result else None
 
 
 
@@ -127,8 +114,4 @@ class Band:
 
 
 
-# bands = [("Ammbasodors of christ", "Tanzania"), 
-    #      ("Zabron singers", "Tanzania"),
-    #      ("Alarm Ministries Rwanda", "Rwanda"),
-    #      ("Healing Worship Team", "Kenya")
-    #      ]
+
