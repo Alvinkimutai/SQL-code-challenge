@@ -28,14 +28,18 @@ class Concert:
     def drop_table(cls):
         connection = sqlite3.connect("mydb.db")
         cursor = connection.cursor()
-        cursor.execute()
+        cursor.execute('''DROP TABLE IF EXISTS concerts;''')
+        connection.commit()
+        cursor.close()
     @classmethod
     def insert_into_concerts(cls, band_id, venue_id, date):
+
         connection = sqlite3.connect("mydb.db")
         cursor = connection.cursor()
-        cursor.execute('INSERT INTO concerts(band_id, venue_id, date) VALUES (?,?)', (band_id, venue_id, date))
+        cursor.execute('INSERT INTO concerts(band_id, venue_id, date) VALUES (?, ?, ?)', (band_id, venue_id, date))
         connection.commit()
         connection.close()
+
 
     def band(self):
         connection = sqlite3.connect("mydb.db")
